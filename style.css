@@ -47,11 +47,22 @@ h2 {
   cursor: pointer;
   background-color: #ff6f61;
   color: #fff;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .option-btn:hover {
   background-color: #ff3b2e;
+}
+
+/* Visual feedback for answers */
+.correct {
+  background-color: #4CAF50 !important;
+  box-shadow: 0 0 10px 2px #4CAF50;
+}
+
+.wrong {
+  background-color: #f44336 !important;
+  box-shadow: 0 0 10px 2px #f44336;
 }
 
 /* Hearts background for the valentine question */
