@@ -13,6 +13,7 @@ body {
   align-items: center;
   justify-content: center;
   color: #333;
+  transition: background 0.5s ease;
 }
 
 /* Container styling */
@@ -51,4 +52,10 @@ h2 {
 
 .option-btn:hover {
   background-color: #ff3b2e;
+}
+
+/* Hearts background for the valentine question */
+.hearts-background {
+  /* Replace the URL below with your desired hearts pattern image */
+  background: url("https://www.toptal.com/designers/subtlepatterns/patterns/hearts.png") repeat;
 }
