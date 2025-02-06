@@ -3,17 +3,17 @@ const quizData = [
   {
     question: "What's my favorite color?",
     options: ["Red", "Blue", "Green", "Yellow"],
-    correctAnswer: "Blue"
+    correctAnswer: "Red"
   },
   {
     question: "What's my favorite food?",
-    options: ["Pizza", "Sushi", "Burger", "Salad"],
-    correctAnswer: "Pizza"
+    options: ["Steak", "Wings", "Burger", "Salad"],
+    correctAnswer: "Steak"
   },
   {
     question: "What's my favorite hobby?",
     options: ["Reading", "Traveling", "Gaming", "Cooking"],
-    correctAnswer: "Reading"
+    correctAnswer: "Gaming"
   },
   {
     question: "Surprise! Will you be my valentine?",
