@@ -3,17 +3,17 @@ const quizData = [
   {
     question: "What's my favorite color?",
     options: ["Red", "Blue", "Green", "Yellow"],
-    correctAnswer: "Red"
+    correctAnswer: "Blue"
   },
   {
     question: "What's my favorite food?",
-    options: ["Steak", "Wings", "Burger", "Salad"],
-    correctAnswer: "Steak"
+    options: ["Pizza", "Sushi", "Burger", "Salad"],
+    correctAnswer: "Pizza"
   },
   {
     question: "What's my favorite hobby?",
     options: ["Reading", "Traveling", "Gaming", "Cooking"],
-    correctAnswer: "Gaming"
+    correctAnswer: "Reading"
   },
   {
     question: "Surprise! Will you be my valentine?",
@@ -24,6 +24,21 @@ const quizData = [
 
 let currentQuestion = 0;
 
+/**
+ * Shuffles an array in place using the Fisher-Yates algorithm.
+ * @param {Array} array - The array to shuffle.
+ * @returns {Array} The shuffled array.
+ */
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    // Pick a random index from 0 to i
+    const j = Math.floor(Math.random() * (i + 1));
+    // Swap array[i] with the element at random index
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 // Function to render the current question and its options
 function renderQuestion() {
   const quizContent = document.getElementById("quiz-content");
@@ -33,7 +48,6 @@ function renderQuestion() {
   if (currentQuestion === quizData.length - 1) {
     document.body.classList.add("hearts-background");
   } else {
-    // Otherwise, ensure the hearts background is removed
     document.body.classList.remove("hearts-background");
   }
 
@@ -49,8 +63,15 @@ function renderQuestion() {
     const optionsContainer = document.createElement("div");
     optionsContainer.className = "options-container";
 
+    // Determine the order of options:
+    // Randomize options if it's not the final (valentine) question.
+    const options =
+      currentQuestion !== quizData.length - 1
+        ? shuffleArray(qData.options.slice())
+        : qData.options;
+
     // Create a button for each option
-    qData.options.forEach((option) => {
+    options.forEach((option) => {
       const btn = document.createElement("button");
       btn.textContent = option;
       btn.className = "option-btn";
