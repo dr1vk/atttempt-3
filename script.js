@@ -25,6 +25,14 @@ function renderQuestion() {
   const quizContent = document.getElementById("quiz-content");
   quizContent.innerHTML = ""; // Clear previous content
 
+  // If it's the final (valentine) question, add the hearts background
+  if (currentQuestion === quizData.length - 1) {
+    document.body.classList.add("hearts-background");
+  } else {
+    // Otherwise, ensure the hearts background is removed
+    document.body.classList.remove("hearts-background");
+  }
+
   if (currentQuestion < quizData.length) {
     const qData = quizData[currentQuestion];
 
