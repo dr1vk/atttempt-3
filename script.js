@@ -1,20 +1,24 @@
-// Define the quiz questions and options
+// Define the quiz questions, options, and correct answers
 const quizData = [
   {
     question: "What's my favorite color?",
     options: ["Red", "Blue", "Green", "Yellow"],
+    correctAnswer: "Blue"
   },
   {
     question: "What's my favorite food?",
     options: ["Pizza", "Sushi", "Burger", "Salad"],
+    correctAnswer: "Pizza"
   },
   {
     question: "What's my favorite hobby?",
     options: ["Reading", "Traveling", "Gaming", "Cooking"],
+    correctAnswer: "Reading"
   },
   {
     question: "Surprise! Will you be my valentine?",
     options: ["Yes", "No"],
+    correctAnswer: "Yes"
   },
 ];
 
@@ -50,7 +54,8 @@ function renderQuestion() {
       const btn = document.createElement("button");
       btn.textContent = option;
       btn.className = "option-btn";
-      btn.addEventListener("click", () => handleAnswer(option));
+      // Pass the button element into handleAnswer so we can add a class later
+      btn.addEventListener("click", (event) => handleAnswer(option, event.target));
       optionsContainer.appendChild(btn);
     });
 
@@ -61,23 +66,37 @@ function renderQuestion() {
   }
 }
 
-// Function to handle answer selection
-function handleAnswer(selectedOption) {
-  // If we're at the last question (the valentine question)
-  if (currentQuestion === quizData.length - 1) {
-    const quizContent = document.getElementById("quiz-content");
-    if (selectedOption === "Yes") {
-      quizContent.innerHTML =
-        "<h2>You made my day! Happy Valentine's Day!</h2>";
-    } else {
-      quizContent.innerHTML =
-        "<h2>No worries—thanks for taking the quiz!</h2>";
-    }
+// Function to handle answer selection with visual feedback
+function handleAnswer(selectedOption, btn) {
+  const currentData = quizData[currentQuestion];
+
+  // Check if the answer is correct and add visual feedback
+  if (selectedOption === currentData.correctAnswer) {
+    btn.classList.add("correct");
   } else {
-    // For regular quiz questions, move on to the next question
-    currentQuestion++;
-    renderQuestion();
+    btn.classList.add("wrong");
   }
+
+  // Disable all option buttons to prevent multiple clicks
+  const buttons = document.querySelectorAll(".option-btn");
+  buttons.forEach(button => button.disabled = true);
+
+  // Wait a short time to let the user see the glow, then proceed
+  setTimeout(() => {
+    // If it's the final question, display a final message
+    if (currentQuestion === quizData.length - 1) {
+      const quizContent = document.getElementById("quiz-content");
+      if (selectedOption === currentData.correctAnswer) {
+        quizContent.innerHTML = "<h2>You made my day! Happy Valentine's Day!</h2>";
+      } else {
+        quizContent.innerHTML = "<h2>No worries—thanks for taking the quiz!</h2>";
+      }
+    } else {
+      // For regular questions, move to the next question
+      currentQuestion++;
+      renderQuestion();
+    }
+  }, 1000);
 }
 
 // Start the quiz by rendering the first question
