@@ -3,17 +3,22 @@ const quizData = [
   {
     question: "What's my favorite color?",
     options: ["Red", "Blue", "Green", "Yellow"],
-    correctAnswer: "Blue"
+    correctAnswer: "Red"
   },
   {
     question: "What's my favorite food?",
-    options: ["Pizza", "Sushi", "Burger", "Salad"],
-    correctAnswer: "Pizza"
+    options: ["Steak", "Sushi", "Burger", "Wings"],
+    correctAnswer: "Steak"
   },
   {
     question: "What's my favorite hobby?",
     options: ["Reading", "Traveling", "Gaming", "Cooking"],
-    correctAnswer: "Reading"
+    correctAnswer: "Gaming"
+  },
+  {
+    question: "What's my favorite anime?",
+    options: ["86", "High School DXD", "One Piece", "Bleach"],
+    correctAnswer: "86"
   },
   {
     question: "Surprise! Will you be my valentine?",
