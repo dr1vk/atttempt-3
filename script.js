@@ -74,7 +74,7 @@ function renderQuestion() {
     const optionsContainer = document.createElement("div");
     optionsContainer.className = "options-container";
 
-    // For the final question and the special transition screen, do not shuffle the options
+    // For regular questions (excluding final & special screens), randomize the options.
     const options =
       (currentQuestion !== quizData.length - 1 && !qData.special)
         ? shuffleArray(qData.options.slice())
@@ -100,7 +100,7 @@ function showPopOutMessage(message) {
   const popOut = document.createElement("div");
   popOut.className = "popout-message";
   popOut.textContent = message;
-  // Basic inline styling for the pop-out (you can move these to your CSS file)
+  // Basic inline styling for the pop-out (feel free to move these styles to your CSS file)
   popOut.style.position = "fixed";
   popOut.style.top = "20px";
   popOut.style.left = "50%";
@@ -122,9 +122,9 @@ function updateFinalOptionsToYes() {
   buttons.forEach(button => {
     button.textContent = "Yes";
     // Override the click event so that it always submits "Yes"
-    button.onclick = function(event) {
+    button.onclick = function() {
       handleAnswer("Yes", button);
-    }
+    };
     button.disabled = false;
   });
 }
@@ -159,21 +159,22 @@ function handleAnswer(selectedOption, btn) {
     } else {
       // Wrong answer ("No")
       noCount++;
-      btn.classList.add("wrong");
-      const buttons = document.querySelectorAll(".option-btn");
-      buttons.forEach(button => button.disabled = true);
-      showPopOutMessage("wrong answer, try again");
-      setTimeout(() => {
-        // Remove wrong styling and re-enable buttons for another try
-        buttons.forEach(button => {
-          button.classList.remove("wrong");
-          button.disabled = false;
-        });
-        // After 5 wrong attempts, change both options to "Yes"
-        if (noCount >= 5) {
-          updateFinalOptionsToYes();
-        }
-      }, 1500);
+      // On the 5th "No", update the buttons to "Yes" immediately (without showing the pop-up)
+      if (noCount >= 5) {
+        updateFinalOptionsToYes();
+        return;
+      } else {
+        btn.classList.add("wrong");
+        const buttons = document.querySelectorAll(".option-btn");
+        buttons.forEach(button => button.disabled = true);
+        showPopOutMessage("wrong answer, try again");
+        setTimeout(() => {
+          buttons.forEach(button => {
+            button.classList.remove("wrong");
+            button.disabled = false;
+          });
+        }, 1500);
+      }
     }
     return;
   }
