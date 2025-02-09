@@ -21,6 +21,13 @@ const quizData = [
     correctAnswer: "86"
   },
   {
+    // New transition screen before the final question
+    question: "Want a harder quiz?",
+    options: ["Yes", "No"],
+    special: true // Flag to indicate this is a special transition screen
+  },
+  {
+    // Final valentine question (this one now gets the hearts background)
     question: "Surprise! Will you be my valentine?",
     options: ["Yes", "No"],
     correctAnswer: "Yes"
@@ -70,8 +77,9 @@ function renderQuestion() {
 
     // Determine the order of options:
     // Randomize options if it's not the final (valentine) question.
+    // (For the special transition screen, order is preserved.)
     const options =
-      currentQuestion !== quizData.length - 1
+      currentQuestion !== quizData.length - 1 && !qData.special
         ? shuffleArray(qData.options.slice())
         : qData.options;
 
@@ -87,7 +95,7 @@ function renderQuestion() {
 
     quizContent.appendChild(optionsContainer);
   } else {
-    // Fallback message if needed (not used in this example)
+    // Fallback message if needed
     quizContent.innerHTML = "<h2>Thanks for playing!</h2>";
   }
 }
@@ -96,33 +104,49 @@ function renderQuestion() {
 function handleAnswer(selectedOption, btn) {
   const currentData = quizData[currentQuestion];
 
-  // Check if the answer is correct and add visual feedback
-  if (selectedOption === currentData.correctAnswer) {
-    btn.classList.add("correct");
-  } else {
-    btn.classList.add("wrong");
-  }
+  // Check if the current screen is a special transition screen
+  if (currentData.special) {
+    // For the "Want a harder quiz?" screen, simply add a temporary class (if desired)
+    btn.classList.add("selected");
 
-  // Disable all option buttons to prevent multiple clicks
-  const buttons = document.querySelectorAll(".option-btn");
-  buttons.forEach(button => button.disabled = true);
+    // Disable all option buttons to prevent multiple clicks
+    const buttons = document.querySelectorAll(".option-btn");
+    buttons.forEach(button => button.disabled = true);
 
-  // Wait a short time to let the user see the glow, then proceed
-  setTimeout(() => {
-    // If it's the final question, display a final message
-    if (currentQuestion === quizData.length - 1) {
-      const quizContent = document.getElementById("quiz-content");
-      if (selectedOption === currentData.correctAnswer) {
-        quizContent.innerHTML = "<h2>You made my day! Happy Valentine's Day!</h2>";
-      } else {
-        quizContent.innerHTML = "<h2>No worries—thanks for taking the quiz!</h2>";
-      }
-    } else {
-      // For regular questions, move to the next question
+    // Wait a short time to let the user see their selection, then proceed to the next question
+    setTimeout(() => {
       currentQuestion++;
       renderQuestion();
+    }, 1000);
+  } else {
+    // For regular questions, check if the answer is correct and add visual feedback
+    if (selectedOption === currentData.correctAnswer) {
+      btn.classList.add("correct");
+    } else {
+      btn.classList.add("wrong");
     }
-  }, 1000);
+
+    // Disable all option buttons to prevent multiple clicks
+    const buttons = document.querySelectorAll(".option-btn");
+    buttons.forEach(button => button.disabled = true);
+
+    // Wait a short time to let the user see the glow, then proceed
+    setTimeout(() => {
+      // If it's the final question, display a final message
+      if (currentQuestion === quizData.length - 1) {
+        const quizContent = document.getElementById("quiz-content");
+        if (selectedOption === currentData.correctAnswer) {
+          quizContent.innerHTML = "<h2>You made my day! Happy Valentine's Day!</h2>";
+        } else {
+          quizContent.innerHTML = "<h2>No worries—thanks for taking the quiz!</h2>";
+        }
+      } else {
+        // For regular questions, move to the next question
+        currentQuestion++;
+        renderQuestion();
+      }
+    }, 1000);
+  }
 }
 
 // Start the quiz by rendering the first question
